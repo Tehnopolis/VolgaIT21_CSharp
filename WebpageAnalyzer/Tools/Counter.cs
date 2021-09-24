@@ -53,7 +53,7 @@ namespace WebpageAnalyzer.Tools
 
             // Если требуется отсортировать
             if(sort)
-                stats.OrderBy(stat => stat.Value).ToDictionary(stat => stat.Key, stat => stat.Value);
+                stats = stats.OrderByDescending(key => key.Value).ToDictionary(x => x.Key, x => x.Value);
 
             return stats;
         }

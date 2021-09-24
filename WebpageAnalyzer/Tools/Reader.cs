@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace WebpageAnalyzer.Tools
 {
@@ -23,16 +24,27 @@ namespace WebpageAnalyzer.Tools
         /// Прочитать файл
         /// </summary>
         /// <returns>Текст файла</returns>
-        public string Read()
+        public string Read(Int32 bufferSize = 128)
         {
+            if (bufferSize == 0)
+                throw new ArgumentNullException("Размер буффера чтения файла был указан неверно");
+
             // Прочитать файл
-            string result = null;
-            StreamReader reader = new StreamReader(this.FilePath);
-            result = reader.ReadToEnd();
-            reader.Close();
+            StringBuilder textBuilder = new StringBuilder();
+            using (var fileStream = File.OpenRead(this.FilePath))
+            using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, bufferSize))
+            {
+                String line;
+                while ((line = streamReader.ReadLine()) != null)
+                {
+                    // StringBuilder.Capacity определяет сколько символов может хранится в памяти экземпляра
+                    if(textBuilder.Length + line.Length >= textBuilder.Capacity)
+                        textBuilder.AppendLine(line);
+                }
+            }
 
             // Выдать текст файла
-            return result;
+            return textBuilder.ToString();
         }
     }
 }

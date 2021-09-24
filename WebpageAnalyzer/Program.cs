@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 using WebpageAnalyzer.Log;
 using WebpageAnalyzer.Tools;
+using System.Text.RegularExpressions;
+
 namespace WebpageAnalyzer
 {
     class Program
@@ -25,8 +27,13 @@ namespace WebpageAnalyzer
                 splitter.Splitters = new List<char>() { ' ', ',', '.', '!', '?', '"', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t' };
                 string[] words = splitter.Split(text);
 
-                // Очистить текст от HTML тегов (Начинаются на '<' и заканчиваются на '>')
-                Cleaner cleaner = new Cleaner((word) => !word.StartsWith('<') && !word.EndsWith('>'));
+                // Очистить текст от HTML тегов и аттрибутов
+                Cleaner cleaner = new Cleaner((word) => {
+                    // Убрать лишние символы
+                    var replaced = Regex.Replace(word, @"[a-zA-Z0-9]*[=|&|<|>|\/]*", "");
+                    // Если слово длинной больше 1, то возвратить его
+                    return replaced.Length > 1 ? replaced : "";
+                });
                 words = cleaner.Clean(words);
 
                 // Посчитать слова (И отсортировать)

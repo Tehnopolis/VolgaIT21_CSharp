@@ -10,11 +10,11 @@ namespace WebpageAnalyzer.Tools
     public sealed class Cleaner
     {
         /// <summary>
-        /// Фильтр слов, определяет проходит ли слово в массив отфильтрованных
+        /// Фильтр слов, изменяет слово в нужный формат
         /// </summary>
         /// <param name="word">Слово</param>
-        /// <returns>true - если прошло фильтр, false - если нет</returns>
-        public delegate bool WordFilter(string word);
+        /// <returns>Изменненое слово или ничего (Если убрать слово вовсе)</returns>
+        public delegate string WordFilter(string word);
 
         public WordFilter Filter { get; set; }
 
@@ -43,15 +43,16 @@ namespace WebpageAnalyzer.Tools
             for(var i = 0; i < words.Length; i++)
             {
                 string currentWord = words[i];
+                string filteredWord = this.Filter(currentWord);
 
                 // Если фильтр слов разрешил слово
-                if (this.Filter(currentWord))
+                if (filteredWord != null && filteredWord != "")
                 {
-                    filteredWords.Add(currentWord);
-                    Logger.Add(Log.MessageType.Info, $"Слово было оставлено: '{currentWord}'");
+                    filteredWords.Add(filteredWord);
+                    Logger.Add(MessageType.Info, $"Слово было отфильтровано: '{currentWord}' => '{filteredWord}'");
                 }
                 else
-                    Logger.Add(Log.MessageType.Info, $"Слово было убрано: '{currentWord}'");
+                    Logger.Add(MessageType.Info, $"Слово было убрано: '{currentWord}'");
             }
 
             return filteredWords.ToArray();
