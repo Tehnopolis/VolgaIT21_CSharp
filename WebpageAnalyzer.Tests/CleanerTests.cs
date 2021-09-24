@@ -10,7 +10,7 @@ namespace WebpageAnalyzer.Tests
         public void TestSimpleCleaner()
         {
             // Фильтр: пропускает только слова, которые начинаются на _
-            Cleaner cleaner = new Cleaner((word) => word.StartsWith('_'));
+            Cleaner cleaner = new Cleaner((word) => word.StartsWith('_') ? word : "");
 
             // Ожидаемый результат: { "_Слово1", "_Слово2_" }
             string[] result = cleaner.Clean(new string[] { "Слово0", "_Слово1", "_Слово2_" });
@@ -27,7 +27,7 @@ namespace WebpageAnalyzer.Tests
         public void TestHtmlCleaner()
         {
             // Фильтр: пропускает только слова, которые не начинаются на < и не заканчиваются на >
-            Cleaner cleaner = new Cleaner((word) => !word.StartsWith('<') && !word.EndsWith('>'));
+            Cleaner cleaner = new Cleaner((word) => !word.StartsWith('<') && !word.EndsWith('>') ? word : "");
 
             // Ожидаемый результат: { "Слово1", "Слово2" }
             string[] result = cleaner.Clean(new string[] { "<Слово0>", "Слово1", "Слово2", "<Слово3/>" });
