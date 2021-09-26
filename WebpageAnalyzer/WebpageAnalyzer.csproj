@@ -6,7 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Tools\" />
     <Folder Include="Log\" />
+    <Folder Include="Components\" />
+    <Folder Include="Components\Reader\" />
+    <Folder Include="Components\Writer\" />
+    <Folder Include="Components\Cleaner\" />
   </ItemGroup>
 </Project>
