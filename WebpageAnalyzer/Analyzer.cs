@@ -7,7 +7,7 @@ using WebpageAnalyzer.Log;
 namespace WebpageAnalyzer
 {
     /// <summary>
-    /// 
+    /// Помогает выполнить все этапы анализа (чтение, разбивка, очистка, подсчет, сортировка, сохранение)
     /// </summary>
     public class Analyzer
     {
@@ -28,6 +28,9 @@ namespace WebpageAnalyzer
         protected Sorter Sorter { get; set; } = new Sorter();
         protected IWriter Writer { get; set; }
 
+        /// <param name="reader">Класс, используемый для чтения текста</param>
+        /// <param name="cleaner">Класс, используемый для очистки массива слов от лишнего</param>
+        /// <param name="writer">Класс, используемый для сохранения результата (может быть пустым)</param>
         /// <exception cref="ArgumentNullException">Если какой-либо параметр имел пустое значение</exception>
         public Analyzer(IReader reader, ICleaner cleaner, IWriter writer)
         {

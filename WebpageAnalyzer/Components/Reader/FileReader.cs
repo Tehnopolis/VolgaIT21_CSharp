@@ -12,6 +12,8 @@ namespace WebpageAnalyzer.Components
         private string FilePath;
         private Int32 BufferSize;
 
+        /// <param name="filePath">Путь до файла</param>
+        /// <param name="bufferSize">Размер буффера чтения</param>
         /// <exception cref="ArgumentNullException">Если не был предоставлен путь до файла</exception>
         public FileReader(string filePath, Int32 bufferSize = 128)
         {

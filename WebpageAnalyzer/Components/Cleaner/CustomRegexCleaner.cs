@@ -6,19 +6,21 @@ using WebpageAnalyzer.Log;
 namespace WebpageAnalyzer.Components
 {
     /// <summary>
-    /// Помогает очищать массив слов от HTML тегов и символов
+    /// Помогает очищать массив слов с помощью регулярных выражений (RegExp)
     /// </summary>
-    public sealed class HtmlCleaner : ICleaner
+    public sealed class CustomRegexCleaner : ICleaner
     {
-        private delegate string WordFilter(string word);
-        private WordFilter Filter { get; set; } = (word) => {
-            // Убрать лишние символы
-            var replaced = Regex.Replace(word, @"[a-zA-Z0-9]*[=|&|<|>|\/]*", "");
-            // Если слово длинной больше 1, то возвратить его
-            return replaced.Length > 1 ? replaced : "";
-        };
+        private string RegexString;
 
-        public HtmlCleaner() { }
+        /// <param name="regex">Регулярное выражение RegExp</param>
+        /// <exception cref="ArgumentNullException">Если регулярное выражение не было предоставлено</exception>
+        public CustomRegexCleaner(string regex)
+        {
+            if (regex == null || regex == "")
+                throw new ArgumentNullException("Регулярное выражение не было предоставлено");
+
+            this.RegexString = regex;
+        }
 
         /// <summary>
         /// Отфильтровать массив слов 
@@ -37,7 +39,9 @@ namespace WebpageAnalyzer.Components
             for (var i = 0; i < words.Length; i++)
             {
                 string currentWord = words[i];
-                string filteredWord = this.Filter(currentWord);
+                string filteredWord = Regex.Replace(currentWord, this.RegexString, "");
+                if (filteredWord.Trim().Length < 1)
+                    filteredWord = "";
 
                 // Если фильтр слов разрешил слово
                 if (filteredWord != null && filteredWord != "")

@@ -1,43 +1,27 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using WebpageAnalyzer.Tools;
+using WebpageAnalyzer.Components;
 namespace WebpageAnalyzer.Tests
 {
     [TestClass]
     public class CleanerTests
     {
         [TestMethod]
-        public void TestSimpleCleaner()
-        {
-            // Фильтр: пропускает только слова, которые начинаются на _
-            Cleaner cleaner = new Cleaner((word) => word.StartsWith('_') ? word : "");
-
-            // Ожидаемый результат: { "_Слово1", "_Слово2_" }
-            string[] result = cleaner.Clean(new string[] { "Слово0", "_Слово1", "_Слово2_" });
-
-            // Фильтр прошло 2 слова?
-            Assert.AreEqual(2, result.Length);
-
-            // Проверить слова
-            Assert.AreEqual("_Слово1", result[0]);
-            Assert.AreEqual("_Слово2_", result[1]);
-        }
-
-        [TestMethod]
         public void TestHtmlCleaner()
         {
-            // Фильтр: пропускает только слова, которые не начинаются на < и не заканчиваются на >
-            Cleaner cleaner = new Cleaner((word) => !word.StartsWith('<') && !word.EndsWith('>') ? word : "");
+            // Фильтр: убирает HTML теги и символы
+            HtmlCleaner cleaner = new HtmlCleaner();
 
-            // Ожидаемый результат: { "Слово1", "Слово2" }
-            string[] result = cleaner.Clean(new string[] { "<Слово0>", "Слово1", "Слово2", "<Слово3/>" });
+            // Ожидаемый результат: { "Слово", "Слово", "Слово" }
+            string[] result = cleaner.Clean(new string[] { "Слово", "Слово</div>", "<p>Слово</p>" });
 
-            // Фильтр прошло 2 слова?
-            Assert.AreEqual(2, result.Length);
+            // Фильтр прошло 3 слова?
+            Assert.AreEqual(3, result.Length);
 
             // Проверить слова
-            Assert.AreEqual("Слово1", result[0]);
-            Assert.AreEqual("Слово2", result[1]);
+            Assert.AreEqual("Слово", result[0]);
+            Assert.AreEqual("Слово", result[1]);
+            Assert.AreEqual("Слово", result[2]);
         }
     }
 }

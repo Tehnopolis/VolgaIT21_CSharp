@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using WebpageAnalyzer.Tools;
+using WebpageAnalyzer.Components;
 namespace WebpageAnalyzer.Tests
 {
     [TestClass]

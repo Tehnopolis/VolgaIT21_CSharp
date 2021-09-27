@@ -17,6 +17,7 @@ namespace WebpageAnalyzer.Components
         {
             this.SplitSymbols = new List<char>();
         }
+        /// <param name="splitters">Символы-разбиватели слов</param>
         public Splitter(List<char> splitters)
         {
             this.SplitSymbols = splitters;
