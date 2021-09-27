@@ -31,8 +31,8 @@ namespace WebpageAnalyzer
         /// <exception cref="ArgumentNullException">Если какой-либо параметр имел пустое значение</exception>
         public Analyzer(IReader reader, ICleaner cleaner, IWriter writer)
         {
-            if(reader == null || cleaner == null || writer == null)
-                throw new ArgumentNullException("Какой-либо из компонентов имел пустое значение");
+            if(reader == null || cleaner == null)
+                throw new ArgumentNullException("Компоненты reader и writer не могут иметь пустое значение");
 
             this.Reader = reader;
             this.Cleaner = cleaner;
@@ -65,6 +65,10 @@ namespace WebpageAnalyzer
                 if(this.WriteResultsToConsole)
                     foreach (string word in stats.Keys)
                         Console.WriteLine($"{word} - {stats[word]}");
+
+                // Сохранить статистику (если требуется)
+                if (this.Writer != null)
+                    this.Writer.Write(stats);
             }
             catch (Exception exception)
             {

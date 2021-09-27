@@ -18,6 +18,8 @@ namespace WebpageAnalyzer.Components
         private string FilePath;
         private FileFormat Format;
 
+        /// <param name="filePath">Путь к файлу</param>
+        /// <param name="format">Формат файла</param>
         /// <exception cref="ArgumentNullException">Если не был предоставлен путь до файла</exception>
         public FileWriter(string filePath, FileFormat format)
         {

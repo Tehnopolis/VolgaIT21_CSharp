@@ -38,13 +38,7 @@ namespace WebpageAnalyzer.Components
                 {
                     string line;
                     while ((line = streamReader.ReadLine()) != null)
-                    {
-                        // StringBuilder.Capacity определяет сколько символов может хранится в памяти экземпляра
-                        if (textBuilder.Length + line.Length >= textBuilder.Capacity)
-                            textBuilder.AppendLine(line);
-                        else
-                            throw new OutOfMemoryException();
-                    }
+                        textBuilder.AppendLine(line);
                 }
 
             // Выдать текст файла
